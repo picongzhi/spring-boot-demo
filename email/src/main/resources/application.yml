@@ -1,0 +1,18 @@
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: qq@qq.com
+    password: ENC(QyJbAUcfxJdj/zhTJuwDehbxSe6Pi6km0y0zs1PW9uw=)
+    protocol: smtp
+    test-connection: true
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.enable: true
+      mail.display.sendmail: spring-boot-email
+jasypt:
+  encryptor:
+    password: spring-boot-email

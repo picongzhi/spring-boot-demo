@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%date [%thread] %-5level [%logger{50}] %file:%line - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 如果只是想要INFO级别的日志，只是过滤INFO还是会输出ERROR日志，因为ERROR的级别最高，所有使用下面的策略可以避免输出ERROR的日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤Error -->
+            <level>ERROR</level>
+            <!-- 匹配到就禁止 -->
+            <onMatch>DENY</onMatch>
+            <!-- 没有匹配到就允许 -->
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <!-- 日志名称，如果没有File属性，那么只会使用FileNamePattern的文件路径规则，
+        如果同时File和FileNamePattern，那么当天日志是File，明天会自动把今天的日志改名为今天的日期，即File的日志都是当天的 -->
+        <!--<File>logs/info.spring-boot-logback.log</File>-->
+        <!-- 滚动策略，按照时间滚动TimeBasedRollingPolicy -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件路径，定义了日志的切分方式，把每一天的日志归档到一个文件中，以防止日志填满整个磁盘空间 -->
+            <FileNamePattern>logs/spring-boot-logback/info.created_on_%d{yyyy-MM-dd}.part_%i.log</FileNamePattern>
+            <!-- 只保留最近90天的日志 -->
+            <maxHistory>90</maxHistory>
+            <!-- 用来指定日志文件的上线大小，到了这个值会删除旧的日志 -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- maxFileSize是活动文件的大小，默认值是10MB -->
+                <maxFileSize>2MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level [%logger{50}] %file:%line - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 如果只想要ERROR级别的日志，需要过滤一下，默认是INFO级别 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>Error</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/spring-boot-logback/error.created_on_%d{yyyy-MM-dd}.part_%i.log</FileNamePattern>
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>2MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level [%logger{50}] %file:%line - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_INFO"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+</configuration>

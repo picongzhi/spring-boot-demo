@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  es7:
+    hostname: es7
+    container_name: es7
+    image: elasticsearch:7.3.0
+    volumes:
+      - "/data/es7/logs:/usr/share/es7/logs:rw"
+      - "/data/es7/data:/usr/share/es7/data:rw"
+    restart: on-failure
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      cluster.name: elasticsearch
+      discovery.type: single-node
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"

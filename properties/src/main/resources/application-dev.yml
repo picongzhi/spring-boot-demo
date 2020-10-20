@@ -1,0 +1,8 @@
+application:
+  name: dev环境 @artifactId@
+  version: dev环境 @version@
+developer:
+  name: dev环境 picongzhi
+  website: dev环境 http://picongzhi.com
+  qq: dev环境 qq
+  phone-number: dev环境 13621990458
